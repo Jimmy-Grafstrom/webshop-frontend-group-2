@@ -37,39 +37,38 @@ export function ProductsPage() {
     }, []);
 
     return (
-        <div>
-            <div>
-                <h1>Produkter</h1>
-                <p>Välkommen till sidan för dig som letar efter marknadens bästa produkter</p>
+        <div className="w-full max-w-6xl mx-auto py-8 px-4">
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-slate-800">Produkter</h1>
+                <p className="text-slate-600 mt-1">Välkommen till sidan för dig som letar efter marknadens bästa produkter</p>
             </div>
 
             {isLoading && (
-                <div>
+                <div className="py-12 text-center text-slate-500">
                     Laddar produkter...
                 </div>
             )}
 
             {error && (
-                <div>
-                    <p>Ett fel uppstod vid hämtning av produkter:</p>
-                    <p>{error}</p>
+                <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-center">
+                    <p className="font-semibold">Ett fel uppstod vid hämtning av produkter:</p>
+                    <p className="text-sm mt-1">{error}</p>
                 </div>
             )}
 
             {!isLoading && !error && products.length === 0 && (
-                <div>
-                    Finns inga produkter hittades.
+                <div className="p-8 text-center text-slate-500 bg-white rounded-lg border border-slate-200">
+                    Inga produkter hittades.
                 </div>
             )}
 
             {!isLoading && !error && products.length > 0 && (
-                <div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {products.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>
             )}
-
         </div>
     )
 }
