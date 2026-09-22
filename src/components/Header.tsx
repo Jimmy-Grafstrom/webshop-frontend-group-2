@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 
 const Header = () => {
   return (
-    <header className="text-center mt-3">
+    <header className="text-center mt-3 sticky top-0 bg-slate-100">
       <h1 className="text-zinc-800 font-bold text-6xl p-2">Group 2 TechShop</h1>
       <nav className="flex gap-2 justify-center">
         <NavLink
