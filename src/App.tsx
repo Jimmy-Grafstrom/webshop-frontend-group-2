@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { LoginPage } from './pages/LoginPage';
+import { WelcomePage } from './pages/WelcomePage';
 
 export function App() {
     return (
@@ -19,6 +20,7 @@ export function App() {
                         }
                     />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/welcome" element={<WelcomePage/>} />
                 </Routes>
             </main>
             <Footer/>
