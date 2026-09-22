@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
+import Footer from './components/Footer';
 import Header from './components/Header';
 
 export function App() {
@@ -18,6 +19,7 @@ export function App() {
                     />
                 </Routes>
             </main>
+            <Footer/>
         </BrowserRouter>
     );
 }
