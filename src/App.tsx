@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import { LoginPage } from './pages/LoginPage';
+import {ProductsPage} from "./pages/ProductsPage.tsx";
 
 export function App() {
     return (
@@ -18,6 +19,7 @@ export function App() {
                             </div>
                         }
                     />
+                    <Route path="/products" element={<ProductsPage/>}/>
                     <Route path="/login" element={<LoginPage />} />
                 </Routes>
             </main>
