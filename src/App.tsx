@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import { LoginPage } from './pages/LoginPage';
 
 export function App() {
     return (
@@ -17,6 +18,7 @@ export function App() {
                             </div>
                         }
                     />
+                    <Route path="/login" element={<LoginPage />} />
                 </Routes>
             </main>
             <Footer/>
