@@ -8,11 +8,11 @@ export function ProductCard({ product }: ProductCardProps) {
     const isInStock = product.stock > 0;
 
     return (
-        <article>
+        <article className={ ""}>
             // Name & description
-            <div>
-                <h2>{product.name}</h2>
-                <p>{product.description}</p>
+            <div className={""}>
+                <h2 className={""}>{product.name}</h2>
+                <p className={""}>{product.description}</p>
             </div>
 
             // Price & stock
