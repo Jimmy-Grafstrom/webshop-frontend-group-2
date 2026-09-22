@@ -11,18 +11,22 @@ export function ProductCard({ product }: ProductCardProps) {
         <article>
             // Name & description
             <div>
-
+                <h2>{product.name}</h2>
+                <p>{product.description}</p>
             </div>
 
             // Price & stock
             <div>
                 <div>
-
+                    <span>{product.price} kr</span>
+                    <span>{isInStock ? "I lager" : "Ej i lager"}</span>
                 </div>
 
                 // Add to cart button
-                <button>
-
+                <button
+                    disabled={!isInStock}
+                    className=""
+                > Lägg till i kundvagn
                 </button>
             </div>
         </article>
