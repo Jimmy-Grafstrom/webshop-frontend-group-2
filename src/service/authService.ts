@@ -1,6 +1,6 @@
 import type { LoginRequest, LoginResponse } from "../types/auth";
 
-const API_BASE = import.meta.env.VITE_ALP_BASE_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 const TOKEN_KEY = "access_token";
 const SUBJECT_KEY = "subject";
 const ROLES_KEY = "roles";

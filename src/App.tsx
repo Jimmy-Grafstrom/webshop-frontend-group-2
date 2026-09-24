@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { Routes, Route } from "react-router";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { LoginPage } from "./pages/LoginPage";
 import { WelcomePage } from "./pages/WelcomePage";
 import { ProductsPage } from "./pages/ProductsPage.tsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
 export function App() {
   return (
-    <BrowserRouter>
+    <>
       <Header />
       <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <Routes>
@@ -22,13 +23,16 @@ export function App() {
               </div>
             }
           />
-          <Route path="/products" element={<ProductsPage />} />
           <Route path="/login" element={<LoginPage />} />
+
+          <Route element={<ProtectedRoute />}>
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/welcome" element={<WelcomePage />} />
+          </Route>
         </Routes>
       </main>
       <Footer />
-    </BrowserRouter>
+     </>  
   );
 }
 
