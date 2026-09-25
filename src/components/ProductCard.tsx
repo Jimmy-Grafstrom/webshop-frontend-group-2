@@ -2,9 +2,10 @@ import type { ProductResponse } from "../types/ProductResponse.ts";
 
 interface ProductCardProps {
     product: ProductResponse;
+    onAdd: (product: ProductResponse) => void;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, onAdd }: ProductCardProps) {
     const isInStock = product.stock > 0;
 
     return (
@@ -27,6 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 {/* Add to cart button */}
                 <button
                     disabled={!isInStock}
+                    onClick={() => onAdd(product)}
                     className="px-3 py-1.5 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                     Lägg till i kundvagn
