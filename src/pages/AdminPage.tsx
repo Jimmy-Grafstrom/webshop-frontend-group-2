@@ -3,6 +3,7 @@ import {useEffect, useState} from "react"
 import type {ProductResponse} from "../types/ProductResponse.ts";
 import {fetchAllProducts} from "../service/ProductService.ts";
 import {ProductTable} from "../components/ProductTable.tsx";
+import {Link} from "react-router";
 
 export const AdminPage = () => {
     const [products, setProducts] = useState<ProductResponse[]>([]);
@@ -62,9 +63,19 @@ export const AdminPage = () => {
             }
 
             {
-                !isLoading && !error && <ProductTable products={products} />
-            }
+                !isLoading && !error && (
+                    <ProductTable
+                        products={products}
+                        actions={
+                            <Link
+                                to={"/admin/ URL till sidan"}
+                                className={"px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"}
+                            >
+                                Lägg till ny produkt
+                            </Link>
+                        }
+                    />
+                )}
         </div>
     )
-        ;
 }

@@ -3,9 +3,10 @@ import {useState} from "react";
 
 interface Props {
     products: ProductResponse[];
+    actions?: React.ReactNode;
 }
 
-export const ProductTable = ({products}: Props) => {
+export const ProductTable = ({products, actions}: Props) => {
     const [searchTerm, setSearchTerm] = useState("");
     const filteredProducts = products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -14,6 +15,7 @@ export const ProductTable = ({products}: Props) => {
 
     return (
         <div className="space-y-4">
+            <div className="flex justify-between items-center gap-4">
             <input
                 type="text"
                 placeholder="Sök på produktnamn eller ID..."
@@ -21,6 +23,9 @@ export const ProductTable = ({products}: Props) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full sm:w-72 px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400"
             />
+
+                {actions && <div>{actions}</div>}
+            </div>
 
             <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-x-auto">
                 <table className="w-full text-left border-collapse">
