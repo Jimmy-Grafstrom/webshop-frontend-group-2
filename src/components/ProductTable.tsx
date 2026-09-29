@@ -13,12 +13,13 @@ export const ProductTable = ({products}: Props) => {
     );
 
     return (
-        <div>
+        <div className="space-y-4">
             <input
                 type="text"
-                placeholder="Sök på produkternamn eller ID"
+                placeholder="Sök på produktnamn eller ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full sm:w-72 px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-400"
             />
 
             <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-x-auto">
