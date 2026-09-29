@@ -37,29 +37,34 @@ export const AdminPage = () => {
     }, []);
 
     return (
-        <div>
-            <div>
-                <div>
-                    <h1>Admin</h1>
-                    <p>
-                        Översikt över produkter och lagersaldo.
-                    </p>
-                </div>
+        <div className="w-full max-w-6xl mx-auto py-8 px-4">
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold text-slate-800">Admin</h1>
+                <p className="text-slate-600 mt-1">
+                    Översikt över produkter och lagersaldo.
+                </p>
             </div>
 
-            {isLoading && (
-                <div>
-                    Laddar produkter...
-                </div>
-            )}
+            {
+                isLoading && (
+                    <div className="p-8 text-center text-slate-500 bg-white rounded-lg border border-slate-200">
+                        Laddar produkter...
+                    </div>
+                )
+            }
 
-            {error && (
-                <div>
-                    Fel vid hämtning av produkter: {error}
-                </div>
-            )}
+            {
+                error && (
+                    <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm mb-4">
+                        Fel vid hämtning av produkter: {error}
+                    </div>
+                )
+            }
 
-            {!isLoading && !error && <ProductTable products={products}/>}
+            {
+                !isLoading && !error && <ProductTable products={products} />
+            }
         </div>
-    );
+    )
+        ;
 }
