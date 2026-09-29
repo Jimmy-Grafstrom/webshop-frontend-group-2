@@ -43,14 +43,39 @@ export function ProductsPage() {
   }, []);
 
   function addToCart(product: ProductResponse) {
-    const cartItem: CartItem = {
-      ...product,
-      quantity: 1,
-    };
+    setCartItems((currentItems) => {
+      const existing = currentItems.find((item) => item.id === product.id);
 
-    setCartItems((currentItems) => [...currentItems, cartItem]);
+      if (existing) {
+        return currentItems.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      }
+
+      return [...currentItems, { ...product, quantity: 1 }];
+    });
 
     alert(`${product.name} har lagts till i kundvagnen`);
+  }
+
+  function increaseQuantity(id: number) {
+    setCartItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
+    );
+  }
+
+  function decreaseQuantity(id: number) {
+    setCartItems((currentItems) =>
+      currentItems
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
+        )
+        .filter((item) => item.quantity > 0),
+    );
   }
 
   return (
@@ -63,11 +88,20 @@ export function ProductsPage() {
         </p>
       </div>
 
-      <button onClick={() => setShowCart(!showCart)} className="border-2 rounded-lg p-1 px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 cursor-pointer mb-4">
+      <button
+        onClick={() => setShowCart(!showCart)}
+        className="border-2 rounded-lg p-1 px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 cursor-pointer mb-4"
+      >
         {showCart ? "Dölj kundvagn" : "Visa kundvagn"}
       </button>
 
-      {showCart && <Cart items={cartItems} />}
+      {showCart && (
+        <Cart
+          items={cartItems}
+          onIncrease={increaseQuantity}
+          onDecrease={decreaseQuantity}
+        />
+      )}
 
       {isLoading && (
         <div className="py-12 text-center text-slate-500">
