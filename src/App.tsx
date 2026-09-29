@@ -5,6 +5,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { WelcomePage } from "./pages/WelcomePage";
 import { ProductsPage } from "./pages/ProductsPage.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import { AdminAddProductPage } from "./pages/AdminAddProductPage.tsx";
 
 export function App() {
   return (
@@ -26,13 +27,13 @@ export function App() {
           <Route path="/login" element={<LoginPage />} />
 
           <Route element={<ProtectedRoute />}>
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/welcome" element={<WelcomePage />} />
           </Route>
         </Routes>
       </main>
       <Footer />
-     </>  
+    </>
   );
 }
 
