@@ -6,6 +6,7 @@ import {WelcomePage} from "./pages/WelcomePage";
 import {ProductsPage} from "./pages/ProductsPage.tsx";
 import {ProtectedRoute} from "./components/ProtectedRoute.tsx";
 import {AdminPage} from "./pages/AdminPage.tsx";
+import { AdminAddProductPage } from "./pages/AdminAddProductPage.tsx";
 
 export function App() {
     return (
@@ -33,6 +34,7 @@ export function App() {
 
                     <Route element={<ProtectedRoute requiredRole={"ADMIN"}/>}>
                         <Route path={"/admin"} element={<AdminPage/>}/>
+                        <Route path="/admin/add" element={<AdminAddProductPage/>} />
                     </Route>
                 </Routes>
             </main>
