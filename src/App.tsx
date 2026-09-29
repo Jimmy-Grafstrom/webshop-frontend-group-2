@@ -34,7 +34,7 @@ export function App() {
 
                     <Route element={<ProtectedRoute requiredRole={"ADMIN"}/>}>
                         <Route path={"/admin"} element={<AdminPage/>}/>
-                        <Route path="/admin/add" element={<AdminAddProductPage />} />
+                        <Route path="/admin/add" element={<AdminAddProductPage/>} />
                     </Route>
                 </Routes>
             </main>
