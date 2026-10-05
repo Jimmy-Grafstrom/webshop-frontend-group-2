@@ -87,23 +87,14 @@ export const ProductTable = ({products, actions}: Props) => {
 
                             {expandedId === p.id && (
                                 <tr className="bg-slate-50">
-                                    <td colSpan={6} className="p-4 border-b">
-                                        <div className="flex gap-4 items-start">
-                                            {p.imageUrl ? (
-                                                <img
-                                                    src={p.imageUrl}
-                                                    alt={p.name}
-                                                    className="w-24 h-24 object-cover rounded border"
-                                                />
-                                            ) : (
-                                                <div className="w-24 h-24 bg-slate-200 rounded flex items-center justify-center text-xs text-slate-400">
-                                                    Ingen bild
-                                                </div>
-                                            )}
-                                            <div>
-                                                <h4 className="font-semibold text-sm text-slate-800 mb-1">Beskrivning</h4>
-                                                <p className="text-sm text-slate-600">{p.description}</p>
-                                            </div>
+                                    <td colSpan={6} className="p-4 border-b border-slate-100">
+                                        <div>
+                                            <h4 className="font-semibold text-xs text-slate-500 uppercase tracking-wider mb-1">
+                                                Beskrivning
+                                            </h4>
+                                            <p className="text-sm text-slate-700 leading-relaxed">
+                                                {p.description}
+                                            </p>
                                         </div>
                                     </td>
                                 </tr>
