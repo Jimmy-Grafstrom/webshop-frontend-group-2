@@ -24,5 +24,5 @@ export interface ProductResponse {
     price: number;
     stock: number;
     category: Category | string;
-    imageUrl: string;
+    imageUrl?: string;
 }
