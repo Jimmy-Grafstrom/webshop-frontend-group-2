@@ -4,12 +4,21 @@ import { fetchAllProducts } from "../service/ProductService.ts";
 import { ProductCard } from "../components/ProductCard.tsx";
 import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
+import { createOrder } from "../service/OrderService.ts";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const savedCart = sessionStorage.getItem("cart");
+
+    if (savedCart) {
+      return JSON.parse(savedCart);
+    }
+
+    return [];
+  });
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
@@ -60,6 +69,10 @@ export function ProductsPage() {
     alert(`${product.name} har lagts till i kundvagnen`);
   }
 
+  useEffect(() => {
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   function increaseQuantity(id: number) {
     setCartItems((currentItems) =>
       currentItems.map((item) =>
@@ -77,6 +90,29 @@ export function ProductsPage() {
         .filter((item) => item.quantity > 0),
     );
   }
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      alert("Kundvagnen är tom.");
+      return;
+    }
+
+    const orderRequest = {
+      items: cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      await createOrder(orderRequest);
+      setCartItems([]);
+      sessionStorage.removeItem("cart")
+      alert("Ordern har skapats.");
+    } catch {
+      alert("Något gick fel när ordern skulle skapas")
+    }
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto py-8 px-4">
@@ -100,6 +136,7 @@ export function ProductsPage() {
           items={cartItems}
           onIncrease={increaseQuantity}
           onDecrease={decreaseQuantity}
+          onCheckout={handleCheckout}
         />
       )}
 
