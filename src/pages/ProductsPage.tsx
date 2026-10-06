@@ -184,6 +184,12 @@ export function ProductsPage() {
         </div>
       )}
 
+      {!isLoading && !error && products.length === 0 && (
+        <div className="p-8 text-center text-slate-500 bg-white rounded-lg border border-slate-200">
+          Inga produkter hittades.
+        </div>
+      )}
+
       {!isLoading && !error && products.length > 0 && filteredProducts.length === 0 && (
           <div className="p-8 text-center text-slate-500 bg-white rounded-lg border border-slate-200">
             <p className="font-medium text-slate-700">Inga produkter matchade din sökning.</p>
@@ -193,7 +199,6 @@ export function ProductsPage() {
           </div>
       )}
 
-      {/* Rendera de filtrerade produkterna */}
       {!isLoading && !error && filteredProducts.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
