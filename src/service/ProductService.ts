@@ -2,7 +2,7 @@ import type { ProductResponse } from "../types/ProductResponse.ts";
 import { getToken } from "./authService.ts";
 
 const API_BASE_URL =
-  import.meta.env.VITE_PRODUCT_API_URL || "http://localhost:5002/api/products";
+  import.meta.env.VITE_PRODUCT_API_URL || "/api/products";
 
 export async function fetchAllProducts(): Promise<ProductResponse[]> {
   const response = await fetch(API_BASE_URL);
