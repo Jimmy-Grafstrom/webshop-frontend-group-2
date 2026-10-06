@@ -7,14 +7,14 @@ export type Category =
     | "TV"
     | "OTHER";
 
-export const CATEGORIES: { label: string; value: Category }[] = [
-    { label: "Datorer", value: "COMPUTER" },
-    { label: "Telefoner", value: "PHONE" },
-    { label: "Tillbehör", value: "ACCESSORY" },
-    { label: "Skärmar", value: "DISPLAY" },
-    { label: "Ljud", value: "AUDIO" },
-    { label: "TV", value: "TV" },
-    { label: "Övrigt", value: "OTHER" },
+export const CATEGORIES: { value: Category; label: string }[] = [
+    { value: "COMPUTER", label: "Dator" },
+    { value: "PHONE", label: "Telefon" },
+    { value: "ACCESSORY", label: "Tillbehör" },
+    { value: "DISPLAY", label: "Skärm" },
+    { value: "AUDIO", label: "Ljud" },
+    { value: "TV", label: "TV" },
+    { value: "OTHER", label: "Övrigt" },
 ];
 
 export interface ProductResponse {

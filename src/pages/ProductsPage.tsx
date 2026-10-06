@@ -5,7 +5,7 @@ import { ProductCard } from "../components/ProductCard.tsx";
 import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
 import { createOrder } from "../service/OrderService.ts";
-import {ProductFilterBar} from "../types/ProductFilterBar.tsx";
+import {ProductFilterBar} from "../components/ProductFilterBar.tsx";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);

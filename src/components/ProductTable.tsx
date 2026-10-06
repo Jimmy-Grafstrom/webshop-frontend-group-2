@@ -27,6 +27,10 @@ export const ProductTable = ({products, actions}: Props) => {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
+    const getCategoryLabel = (category?: string) => {
+        return CATEGORIES.find((c) => c.value === category)?.label || category || "-";
+    };
+
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center gap-4">
@@ -72,7 +76,7 @@ export const ProductTable = ({products, actions}: Props) => {
                             <tr key={p.id}>
                                 <td className="p-3 text-xs font-mono">{p.id}</td>
                                 <td className="p-3 font-medium">{p.name}</td>
-                                <td className="p-3 text-xs">{p.category || "-"}</td>
+                                <td className="p-3 text-xs">{getCategoryLabel(p.category)}</td>
                                 <td className="p-3">{p.price} kr</td>
                                 <td className="p-3">{p.stock > 0 ? `${p.stock} st` : "Ej i lager"}</td>
                                 <td className="p-3 text-right">
