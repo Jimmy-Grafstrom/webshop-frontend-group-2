@@ -125,6 +125,7 @@ export function ProductForm({ onSubmit }: Props) {
       </select>
       <input
         className={inputClass}
+        type="url"
         value={imageUrl}
         onChange={(e) => setImageUrl(e.target.value)}
         placeholder="Bild url"
