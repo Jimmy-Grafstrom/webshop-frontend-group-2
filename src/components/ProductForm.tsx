@@ -20,10 +20,10 @@ export type NewProduct = {
 
 const categories: { value: Category; label: string }[] = [
   { value: "COMPUTER", label: "Dator" },
-  { value: "PHONE", label: "telefon" },
-  { value: "ACCESSORY", label: "tillbehör" },
+  { value: "PHONE", label: "Telefon" },
+  { value: "ACCESSORY", label: "Tillbehör" },
   { value: "DISPLAY", label: "Skärm" },
-  { value: "AUDIO", label: "ljud" },
+  { value: "AUDIO", label: "Ljud" },
   { value: "TV", label: "TV" },
   { value: "OTHER", label: "Övrigt" },
 ];
