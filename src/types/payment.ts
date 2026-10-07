@@ -1,7 +1,5 @@
 export type PaymentRequest = {
     orderId: number;
-    amount: number;
-    currency: string;
 };
 
 export type PaymentStatus = "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED";
@@ -13,5 +11,5 @@ export type PaymentResponse = {
     stripePaymentIntentId: string;
     status: PaymentStatus;
     createdAt: string;
-    checjoutUrl: string;
+    checkoutUrl: string;
 }

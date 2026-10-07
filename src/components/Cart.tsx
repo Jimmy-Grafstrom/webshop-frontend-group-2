@@ -1,4 +1,5 @@
 import type { CartItem } from "../types/CartItem";
+import { createPayment } from "../service/PaymentService";
 
 type CartProps = {
   items: CartItem[];
@@ -19,7 +20,25 @@ export const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
     return <p className="text-slate-500 text-sm mb-4">Din kundvagn är tom.</p>;
   }
 
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
+
+  const handleCheckout = async () => {
+    try {
+      const payment = await createPayment({ orderId: 1 });
+
+      window.location.href = payment.checkoutUrl;
+    } catch (error) {
+      console.error("Fel vid utcheckning:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Ett fel uppstod vid betalning.",
+      );
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-5 mt-4 mb-4">
@@ -27,13 +46,26 @@ export const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
 
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item.id} className="flex justify-between items-center text-sm">
+          <li
+            key={item.id}
+            className="flex justify-between items-center text-sm"
+          >
             <span>{item.name}</span>
 
             <div className="flex items-center gap-2">
-              <button onClick={() => onDecrease(item.id)} className="px-2 border rounded cursor-pointer">−</button>
+              <button
+                onClick={() => onDecrease(item.id)}
+                className="px-2 border rounded cursor-pointer"
+              >
+                −
+              </button>
               <span>{item.quantity}</span>
-              <button onClick={() => onIncrease(item.id)} className="px-2 border rounded cursor-pointer">+</button>
+              <button
+                onClick={() => onIncrease(item.id)}
+                className="px-2 border rounded cursor-pointer"
+              >
+                +
+              </button>
             </div>
 
             <span>{formatPrice(item.price * item.quantity)}</span>
@@ -45,6 +77,12 @@ export const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
         <span>Totalt</span>
         <span>{formatPrice(total)}</span>
       </div>
+      <button
+        onClick={handleCheckout}
+        className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded cursor-pointer transition-colors"
+      >
+        Till betalning
+      </button>
     </div>
   );
 };
