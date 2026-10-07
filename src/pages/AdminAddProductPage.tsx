@@ -14,7 +14,7 @@ export function AdminAddProductPage() {
   }
 
   return (
-    <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+    <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md self-start mt-2">
       <h1 className="text-2xl font-bold text-indigo-600 text-center mb-6">
         Lägg till produkt
       </h1>

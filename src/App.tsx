@@ -9,6 +9,7 @@ import { AdminPage } from "./pages/AdminPage.tsx";
 import { AdminAddProductPage } from "./pages/AdminAddProductPage.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+import { ProductsDetailsPage } from "./pages/ProductsDetailsPage.tsx";
 
 export function App() {
   return (
@@ -21,6 +22,7 @@ export function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/products/:id" element={<ProductsDetailsPage />} />
             <Route path="/welcome" element={<WelcomePage />} />
           </Route>
 
