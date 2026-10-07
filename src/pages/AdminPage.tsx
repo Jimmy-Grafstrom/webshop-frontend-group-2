@@ -42,7 +42,7 @@ export const AdminPage = () => {
     }, []);
 
     return (
-        <div className="w-full max-w-6xl mx-auto py-8 px-4">
+        <div className="w-full max-w-6xl mx-auto py-8 px-4 self-start mt-2">
             <div className="mb-6">
                 <h1 className="text-3xl font-bold text-slate-800">Admin</h1>
                 <p className="text-slate-600 mt-1">

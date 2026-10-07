@@ -23,7 +23,7 @@ export type NewProduct = {
 export async function createProduct(
   product: NewProduct,
 ): Promise<ProductResponse> {
-  const response = await fetch(`${API_BASE_URL}/add`,{
+  const response = await fetch(`${API_BASE_URL}/add`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -31,6 +31,20 @@ export async function createProduct(
     },
     body: JSON.stringify(product),
   });
+
+  return response.json();
+}
+
+export async function fetchProductsById(id: number): Promise<ProductResponse | null> {
+  const response = await fetch(`${API_BASE_URL}/${id}`);
+
+  if(response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`Error fetching product: HTTP ${response.status}`);
+  }
 
   return response.json();
 }

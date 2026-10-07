@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { ProductCard } from "../components/ProductCard";
 import type { ProductResponse } from "../types/ProductResponse";
+import { MemoryRouter } from "react-router";
 
 describe("Tester av ProductCard", () => {
   const product: ProductResponse = {
@@ -17,7 +18,7 @@ describe("Tester av ProductCard", () => {
   it("Verifierar att produktinformation visas", () => {
     const onAdd = vi.fn();
 
-    render(<ProductCard product={product} onAdd={onAdd} />);
+    render(<MemoryRouter><ProductCard product={product} onAdd={onAdd} /></MemoryRouter>);
 
     expect(
       screen.getByRole("heading", { name: product.name }),
@@ -33,7 +34,7 @@ describe("Tester av ProductCard", () => {
   it("Testar att onAdd anropas med rätt produkt", () => {
     const onAdd = vi.fn();
 
-    render(<ProductCard product={product} onAdd={onAdd} />);
+    render(<MemoryRouter><ProductCard product={product} onAdd={onAdd} /></MemoryRouter>);
 
     fireEvent.click(screen.getByText("Lägg till i kundvagn"));
 
@@ -50,7 +51,7 @@ describe("Tester av ProductCard", () => {
 
     const onAdd = vi.fn();
 
-    render(<ProductCard product={productWithoutStock} onAdd={onAdd} />);
+    render(<MemoryRouter><ProductCard product={productWithoutStock} onAdd={onAdd} /></MemoryRouter>);
 
     const button = screen.getByRole("button", {name: "Lägg till i kundvagn"});
 
