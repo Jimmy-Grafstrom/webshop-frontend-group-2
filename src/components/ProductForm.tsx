@@ -1,11 +1,32 @@
 import { useState } from "react";
 
+export type Category =
+  | "COMPUTER"
+  | "PHONE"
+  | "ACCESSORY"
+  | "DISPLAY"
+  | "AUDIO"
+  | "TV"
+  | "OTHER";
+
 export type NewProduct = {
   name: string;
   description: string;
   price: number;
   stock: number;
+  category: string;
+  imageUrl: string;
 };
+
+const categories: { value: Category; label: string }[] = [
+  { value: "COMPUTER", label: "Dator" },
+  { value: "PHONE", label: "Telefon" },
+  { value: "ACCESSORY", label: "Tillbehör" },
+  { value: "DISPLAY", label: "Skärm" },
+  { value: "AUDIO", label: "Ljud" },
+  { value: "TV", label: "TV" },
+  { value: "OTHER", label: "Övrigt" },
+];
 
 type Props = {
   onSubmit: (product: NewProduct) => Promise<void>;
@@ -16,6 +37,8 @@ export function ProductForm({ onSubmit }: Props) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
+  const [category, setCategory] = useState<Category | "">("");
+  const [imageUrl, setImageUrl] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,6 +51,8 @@ export function ProductForm({ onSubmit }: Props) {
     if (stock == "" || !Number.isInteger(Number(stock)) || Number(stock) < 0) {
       found.push("Lagersaldo måste vara ett heltal på 0 eller mer");
     }
+    if (!category) found.push("Kategori måste väljas");
+
     return found;
   }
 
@@ -44,6 +69,8 @@ export function ProductForm({ onSubmit }: Props) {
         description: description.trim(),
         price: Number(price),
         stock: Number(stock),
+        category: category as Category,
+        imageUrl: imageUrl.trim(),
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -83,6 +110,25 @@ export function ProductForm({ onSubmit }: Props) {
         value={stock}
         onChange={(e) => setStock(e.target.value)}
         placeholder="Lagersaldo"
+      />
+      <select
+        className={inputClass}
+        value={category}
+        onChange={(e) => setCategory(e.target.value as Category)}
+      >
+        <option value="">Välj Kategori</option>
+        {categories.map((c) => (
+            <option key={c.value} value={c.value}>
+                {c.label}
+            </option>
+        ))}
+      </select>
+      <input
+        className={inputClass}
+        type="url"
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
+        placeholder="Bild url"
       />
       <button
         type="submit"

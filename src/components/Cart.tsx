@@ -5,6 +5,7 @@ type CartProps = {
   items: CartItem[];
   onIncrease: (id: number) => void;
   onDecrease: (id: number) => void;
+  onCheckout: () => void;
 };
 
 const formatPrice = (value: number) =>
@@ -15,7 +16,12 @@ const formatPrice = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-export const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
+export const Cart = ({
+  items,
+  onIncrease,
+  onDecrease,
+  onCheckout,
+}: CartProps) => {
   if (items.length === 0) {
     return <p className="text-slate-500 text-sm mb-4">Din kundvagn är tom.</p>;
   }

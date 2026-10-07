@@ -4,12 +4,24 @@ import { fetchAllProducts } from "../service/ProductService.ts";
 import { ProductCard } from "../components/ProductCard.tsx";
 import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
+import { createOrder } from "../service/OrderService.ts";
+import {ProductFilterBar} from "../components/ProductFilterBar.tsx";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const savedCart = sessionStorage.getItem("cart");
+
+    if (savedCart) {
+      return JSON.parse(savedCart);
+    }
+
+    return [];
+  });
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
@@ -60,6 +72,10 @@ export function ProductsPage() {
     alert(`${product.name} har lagts till i kundvagnen`);
   }
 
+  useEffect(() => {
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
+
   function increaseQuantity(id: number) {
     setCartItems((currentItems) =>
       currentItems.map((item) =>
@@ -77,6 +93,44 @@ export function ProductsPage() {
         .filter((item) => item.quantity > 0),
     );
   }
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      alert("Kundvagnen är tom.");
+      return;
+    }
+
+    const orderRequest = {
+      items: cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      await createOrder(orderRequest);
+      setCartItems([]);
+      sessionStorage.removeItem("cart")
+      alert("Ordern har skapats.");
+    } catch {
+      alert("Något gick fel när ordern skulle skapas")
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    // 1. Kategorifilter: Om "ALL" visas allt, annars bara vald kategori
+    const matchesCategory =
+        selectedCategory === "ALL" || product.category === selectedCategory;
+
+    // 2. Textsökning: Skiftlägesokänsligt i BÅDE namn och beskrivning
+    const term = searchTerm.trim().toLowerCase();
+    const matchesSearch =
+        term === "" ||
+        product.name.toLowerCase().includes(term) ||
+        product.description.toLowerCase().includes(term);
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="w-full max-w-6xl mx-auto py-8 px-4">
@@ -100,8 +154,20 @@ export function ProductsPage() {
           items={cartItems}
           onIncrease={increaseQuantity}
           onDecrease={decreaseQuantity}
+          onCheckout={handleCheckout}
         />
       )}
+
+      <ProductFilterBar
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          onReset={() => {
+            setSearchTerm("");
+            setSelectedCategory("ALL");
+          }}
+      />
 
       {isLoading && (
         <div className="py-12 text-center text-slate-500">
@@ -124,12 +190,21 @@ export function ProductsPage() {
         </div>
       )}
 
-      {!isLoading && !error && products.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} onAdd={addToCart} />
-          ))}
-        </div>
+      {!isLoading && !error && products.length > 0 && filteredProducts.length === 0 && (
+          <div className="p-8 text-center text-slate-500 bg-white rounded-lg border border-slate-200">
+            <p className="font-medium text-slate-700">Inga produkter matchade din sökning.</p>
+            <p className="text-sm mt-1 text-slate-500">
+              Testa att söka på något annat eller ändra kategori.
+            </p>
+          </div>
+      )}
+
+      {!isLoading && !error && filteredProducts.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} onAdd={addToCart} />
+            ))}
+          </div>
       )}
     </div>
   );

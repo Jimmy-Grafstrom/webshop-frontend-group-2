@@ -10,6 +10,8 @@ describe("Tester av ProductCard", () => {
     description: "Complete gaming-computer",
     price: 12000,
     stock: 12,
+    category: "COMPUTER",
+    imageUrl: "https://example.com/computer.jpg",
   };
 
   it("Verifierar att produktinformation visas", () => {

@@ -1,8 +1,7 @@
 import { getToken } from "./authService";
 import type { PaymentRequest, PaymentResponse } from "../types/payment";
 
-const PAYMENT_API_BASE_URL =
-  import.meta.env.VITE_PAYMENT_API_URL || "http://localhost:5005/payment";
+const PAYMENT_API_BASE_URL = import.meta.env.VITE_PAYMENT_API_URL || "/payment";
 
 export async function createPayment(
   request: PaymentRequest,
