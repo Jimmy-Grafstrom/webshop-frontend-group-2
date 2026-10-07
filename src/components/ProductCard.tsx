@@ -1,3 +1,4 @@
+import {useState} from "react";
 import type { ProductResponse } from "../types/ProductResponse.ts";
 
 interface ProductCardProps {
@@ -6,20 +7,20 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onAdd }: ProductCardProps) {
+  const [imageError, setImageError] = useState(false);
+  const showImage = product.imageUrl && !imageError;
   const isInStock = product.stock > 0;
 
   return (
     <article className="bg-white rounded-lg border border-slate-200 p-5 flex flex-col justify-between shadow-sm hover:shadow transition-shadow">
       {/*Image & Name & description side by side*/}
       <div className="flex gap-4">
-        {product.imageUrl ? (
+        {showImage ? (
           <img
             src={product.imageUrl}
             alt={product.name}
             className="w-20 h-20 object-cover rounded-md flex-shrink-0"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-20 h-20 bg-slate-100 rounded-md flex-shrink-0 flex items-center justify-center text-slate-300 text-xs text-center">

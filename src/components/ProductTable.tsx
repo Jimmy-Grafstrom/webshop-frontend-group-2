@@ -112,7 +112,7 @@ export const ProductTable = ({ products, actions }: Props) => {
 
                 {expandedId === p.id && (
                   <tr className="bg-slate-50">
-                    <td colSpan={6} className="p-4 border-b border-slate-100">
+                    <td colSpan={7} className="p-4 border-b border-slate-100">
                       <div>
                         <h4 className="font-semibold text-xs text-slate-500 uppercase tracking-wider mb-1">
                           Beskrivning
