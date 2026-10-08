@@ -1,4 +1,7 @@
-import type {CartItem} from "../types/CartItem";
+import type { CartItem } from "../types/CartItem";
+import { createOrder } from "../service/OrderService";
+import { createPayment } from "../service/PaymentService";
+import type { CreateOrderRequest } from "../types/Order";
 
 type CartProps = {
   items: CartItem[];
@@ -19,7 +22,6 @@ export const Cart = ({
   items,
   onIncrease,
   onDecrease,
-  onCheckout,
 }: CartProps) => {
   if (items.length === 0) {
     return <p className="text-slate-500 text-sm mb-4">Din kundvagn är tom.</p>;
@@ -29,6 +31,26 @@ export const Cart = ({
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
+  const handleCheckout = async () => {
+    try {
+      const orderPayload: CreateOrderRequest = {
+        items: items.map((item) => ({ id: item.id, quantity: item.quantity })),
+      };
+      const createdOrder = await createOrder(orderPayload);
+
+      const payment = await createPayment({ orderId: createdOrder.id });
+
+      window.location.href = payment.checkoutUrl;
+    } catch (error) {
+      console.error("Fel vid utcheckning:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Ett fel uppstod vid betalning.",
+      );
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg border border-slate-200 p-5 mt-4 mb-4">
@@ -68,7 +90,7 @@ export const Cart = ({
         <span>{formatPrice(total)}</span>
       </div>
       <button
-        onClick={onCheckout}
+        onClick={handleCheckout}
         className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded cursor-pointer transition-colors"
       >
         Till betalning
