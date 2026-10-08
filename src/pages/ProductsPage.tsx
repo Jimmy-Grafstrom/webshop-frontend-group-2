@@ -4,7 +4,6 @@ import { fetchAllProducts } from "../service/ProductService.ts";
 import { ProductCard } from "../components/ProductCard.tsx";
 import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
-import { createOrder } from "../service/OrderService.ts";
 import {ProductFilterBar} from "../components/ProductFilterBar.tsx";
 
 export function ProductsPage() {
@@ -94,28 +93,6 @@ export function ProductsPage() {
     );
   }
 
-  const handleCheckout = async () => {
-    if (cartItems.length === 0) {
-      alert("Kundvagnen är tom.");
-      return;
-    }
-
-    const orderRequest = {
-      items: cartItems.map((item) => ({
-        id: item.id,
-        quantity: item.quantity,
-      })),
-    };
-
-    try {
-      await createOrder(orderRequest);
-      setCartItems([]);
-      sessionStorage.removeItem("cart")
-      alert("Ordern har skapats.");
-    } catch {
-      alert("Något gick fel när ordern skulle skapas")
-    }
-  };
 
   const filteredProducts = products.filter((product) => {
     // 1. Kategorifilter: Om "ALL" visas allt, annars bara vald kategori
@@ -154,7 +131,6 @@ export function ProductsPage() {
           items={cartItems}
           onIncrease={increaseQuantity}
           onDecrease={decreaseQuantity}
-          onCheckout={handleCheckout}
         />
       )}
 

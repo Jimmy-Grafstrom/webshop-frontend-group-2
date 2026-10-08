@@ -7,7 +7,6 @@ type CartProps = {
   items: CartItem[];
   onIncrease: (id: number) => void;
   onDecrease: (id: number) => void;
-  onCheckout: () => void;
 };
 
 const formatPrice = (value: number) =>
