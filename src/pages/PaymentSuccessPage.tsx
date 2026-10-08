@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
+import { getSubject } from "../service/authService";
 
 export function PaymentSuccessPage() {
   useEffect(() => {
-    sessionStorage.removeItem("cart");
+    const subject = getSubject();
+
+    if(subject) {
+    sessionStorage.removeItem(`cart:${subject}`);
+    }
   }, []);
 
   return (

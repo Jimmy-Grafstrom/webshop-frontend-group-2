@@ -5,6 +5,7 @@ import { ProductCard } from "../components/ProductCard.tsx";
 import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
 import {ProductFilterBar} from "../components/ProductFilterBar.tsx";
+import { getSubject } from "../service/authService.ts";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<ProductResponse[]>([]);
@@ -12,15 +13,16 @@ export function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const subject = getSubject();
+  const cartKey = subject ? `cart:${subject}` : null;
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const savedCart = sessionStorage.getItem("cart");
+    if(!cartKey) return [];
 
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
+    const savedCart = sessionStorage.getItem(cartKey);
 
-    return [];
+    return savedCart ? JSON.parse(savedCart) : [];
   });
+
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
@@ -72,8 +74,10 @@ export function ProductsPage() {
   }
 
   useEffect(() => {
-    sessionStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    if(cartKey) {
+      sessionStorage.setItem(cartKey, JSON.stringify(cartItems));
+    }
+  }, [cartItems, cartKey]);
 
   function increaseQuantity(id: number) {
     setCartItems((currentItems) =>
