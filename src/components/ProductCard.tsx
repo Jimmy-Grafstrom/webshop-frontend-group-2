@@ -20,11 +20,11 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-20 h-20 object-cover rounded-md flex-shrink-0"
+            className="w-20 h-20 object-cover rounded-md shrink-0"
             onError={() => setImageError(true)}
           />
         ) : (
-          <div className="w-20 h-20 bg-slate-100 rounded-md flex-shrink-0 flex items-center justify-center text-slate-300 text-xs text-center">
+          <div className="w-20 h-20 bg-slate-100 rounded-md shrink-0 flex items-center justify-center text-slate-300 text-xs text-center">
             Ingen bild
           </div>
         )}
