@@ -17,8 +17,15 @@ describe("Tester av ProductCard", () => {
 
   it("Verifierar att produktinformation visas", () => {
     const onAdd = vi.fn();
+    const formattedPrice = new Intl.NumberFormat("sv-SE", {
+      maximumFractionDigits: 2,
+    }).format(product.price);
 
-    render(<MemoryRouter><ProductCard product={product} onAdd={onAdd} /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} onAdd={onAdd} />
+      </MemoryRouter>,
+    );
 
     expect(
       screen.getByRole("heading", { name: product.name }),
@@ -26,7 +33,13 @@ describe("Tester av ProductCard", () => {
 
     expect(screen.getByText(product.description)).toBeInTheDocument();
 
-    expect(screen.getByText(`${product.price} kr`)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (_, element) =>
+          element?.textContent?.replace(/\s/g, "") ===
+          `${formattedPrice.replace(/\s/g, "")}kr`,
+      ),
+    ).toBeInTheDocument();
 
     expect(screen.getByText("I lager")).toBeInTheDocument();
   });
@@ -34,7 +47,11 @@ describe("Tester av ProductCard", () => {
   it("Testar att onAdd anropas med rätt produkt", () => {
     const onAdd = vi.fn();
 
-    render(<MemoryRouter><ProductCard product={product} onAdd={onAdd} /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} onAdd={onAdd} />
+      </MemoryRouter>,
+    );
 
     fireEvent.click(screen.getByText("Lägg till i kundvagn"));
 
@@ -43,22 +60,25 @@ describe("Tester av ProductCard", () => {
   });
 
   it("Testar om en produkt inte finns i lager", () => {
-    
     const productWithoutStock: ProductResponse = {
-        ...product,
-        stock:0
+      ...product,
+      stock: 0,
     };
 
     const onAdd = vi.fn();
 
-    render(<MemoryRouter><ProductCard product={productWithoutStock} onAdd={onAdd} /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <ProductCard product={productWithoutStock} onAdd={onAdd} />
+      </MemoryRouter>,
+    );
 
-    const button = screen.getByRole("button", {name: "Lägg till i kundvagn"});
+    const button = screen.getByRole("button", { name: "Lägg till i kundvagn" });
 
     fireEvent.click(button);
-    
+
     expect(onAdd).not.toHaveBeenCalled();
     expect(button).toBeDisabled();
     expect(screen.getByText("Ej i lager")).toBeInTheDocument();
-  })
+  });
 });

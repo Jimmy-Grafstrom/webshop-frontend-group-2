@@ -7,6 +7,10 @@ interface ProductCardProps {
   onAdd: (product: ProductResponse) => void;
 }
 
+const priceFormatter = new Intl.NumberFormat("sv-SE", {
+  maximumFractionDigits: 2,
+});
+
 export function ProductCard({ product, onAdd }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
   const showImage = product.imageUrl && !imageError;
@@ -40,10 +44,10 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
       </div>
 
       {/* Price & stock */}
-      <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+      <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col gap-3">
         <div>
-          <span className="text-xl font-bold text-slate-900 block">
-            {product.price} kr
+          <span className="block text-xl font-bold tabular-nums text-slate-900">
+            {priceFormatter.format(product.price)} kr
           </span>
           <span
             className={`text-xs font-medium ${isInStock ? "text-emerald-600" : "text-rose-600"}`}
