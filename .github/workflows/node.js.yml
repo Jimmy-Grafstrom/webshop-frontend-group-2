@@ -16,12 +16,6 @@ jobs:
         node-version: [22.x]
 
     steps:
-    - name: Block accidental merge from paymentfrontend
-      if: github.event_name == 'pull_request' && github.head_ref == 'paymentfrontend'
-      run: |
-        echo "::error::Direkt merge från 'paymentfrontend' till 'main' är spärrad!"
-        exit 1
-
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
