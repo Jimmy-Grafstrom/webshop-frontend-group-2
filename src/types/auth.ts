@@ -9,3 +9,8 @@ export type LoginResponse = {
   subject: string;
   roles: string[];
 };
+
+export type RegisterRequest = {
+  username: string;
+  password: string;
+};

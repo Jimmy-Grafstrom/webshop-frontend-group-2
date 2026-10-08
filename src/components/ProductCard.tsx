@@ -1,5 +1,6 @@
-import {useState} from "react";
+import { useState } from "react";
 import type { ProductResponse } from "../types/ProductResponse.ts";
+import { Link } from "react-router";
 
 interface ProductCardProps {
   product: ProductResponse;
@@ -27,6 +28,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
             Ingen bild
           </div>
         )}
+
         <div>
           <h2 className="text-lg font-semibold text-slate-800">
             {product.name}
@@ -50,14 +52,24 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
           </span>
         </div>
 
-        {/* Add to cart button */}
-        <button
-          disabled={!isInStock}
-          onClick={() => onAdd(product)}
-          className="px-3 py-1.5 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-        >
-          Lägg till i kundvagn
-        </button>
+        {/* Read More button */}
+        <div className="flex items-center gap-2">
+          <Link
+            to={`/products/${product.id}`}
+            className="px-3 py-1.5 rounded-md border border-indigo-600 text-indigo-600 text-sm font-medium hover:bg-indigo-50"
+          >
+            Läs mer
+          </Link>
+
+          {/* Add to cart button */}
+          <button
+            disabled={!isInStock}
+            onClick={() => onAdd(product)}
+            className="px-3 py-1.5 rounded-md bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            Lägg till i kundvagn
+          </button>
+        </div>
       </div>
     </article>
   );

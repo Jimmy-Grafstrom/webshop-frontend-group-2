@@ -59,7 +59,7 @@ export const Cart = ({
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex justify-between items-center text-sm"
+            className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 text-sm"
           >
             <span>{item.name}</span>
 
@@ -70,7 +70,7 @@ export const Cart = ({
               >
                 −
               </button>
-              <span>{item.quantity}</span>
+              <span className="w-6 text-center">{item.quantity}</span>
               <button
                 onClick={() => onIncrease(item.id)}
                 className="px-2 border rounded cursor-pointer"
@@ -79,7 +79,9 @@ export const Cart = ({
               </button>
             </div>
 
-            <span>{formatPrice(item.price * item.quantity)}</span>
+            <span className="text-right">
+              {formatPrice(item.price * item.quantity)}
+            </span>
           </li>
         ))}
       </ul>

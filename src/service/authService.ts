@@ -1,4 +1,4 @@
-import type { LoginRequest, LoginResponse } from "../types/auth";
+import type { LoginRequest, LoginResponse, RegisterRequest } from "../types/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 const TOKEN_KEY = "access_token";
@@ -25,6 +25,24 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
   sessionStorage.setItem(ROLES_KEY, JSON.stringify(data.roles));
 
   return data;
+}
+
+export async function register(credentials: RegisterRequest): Promise<void> {
+  const response = await fetch(`${API_BASE}/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(credentials),
+  });
+
+  if (!response.ok) {
+    if (response.status === 409) {
+      throw new Error("Användarnamnet är redan upptaget");
+    }
+    if (response.status === 400) {
+      throw new Error("Ogiltiga uppgifter");
+    }
+    throw new Error("Något gick fel");
+  }
 }
 
 export function logout() {
