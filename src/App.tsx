@@ -10,6 +10,7 @@ import { AdminAddProductPage } from "./pages/AdminAddProductPage.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 import { ProductsDetailsPage } from "./pages/ProductsDetailsPage.tsx";
+import { RegisterPage } from "./pages/RegisterPage.tsx";
 
 export function App() {
   return (
@@ -19,6 +20,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           <Route element={<ProtectedRoute />}>
             <Route path="/products" element={<ProductsPage />} />
