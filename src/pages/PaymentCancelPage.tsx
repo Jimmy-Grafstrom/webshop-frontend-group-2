@@ -2,7 +2,7 @@ import {Link} from "react-router";
 
 export function PaymentCancelPage() {
     return(
-        <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center">
+        <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center self-start mt-2">
             <h1 className="text-2xl font-bold text-red-600 mb-4">
                 Betalning avbruten
             </h1>
