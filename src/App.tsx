@@ -11,6 +11,8 @@ import { HomePage } from "./pages/HomePage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 import { ProductsDetailsPage } from "./pages/ProductsDetailsPage.tsx";
 import { RegisterPage } from "./pages/RegisterPage.tsx";
+import { PaymentSuccessPage } from "./pages/PaymentSuccessPage.tsx";
+import { PaymentCancelPage } from "./pages/PaymentCancelPage.tsx";
 
 export function App() {
   return (
@@ -26,6 +28,8 @@ export function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductsDetailsPage />} />
             <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/payment-success" element={<PaymentSuccessPage />} />
+            <Route path="/payment-cancel" element={<PaymentCancelPage />} />
           </Route>
 
           <Route element={<ProtectedRoute requiredRole={"ADMIN"} />}>
