@@ -28,8 +28,8 @@ export function App() {
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductsDetailsPage />} />
             <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/payment-success" element={<PaymentSuccessPage />} />
-            <Route path="/payment-cancel" element={<PaymentCancelPage />} />
+            <Route path="/payment/success" element={<PaymentSuccessPage />} />
+            <Route path="/payment/cancel" element={<PaymentCancelPage />} />
           </Route>
 
           <Route element={<ProtectedRoute requiredRole={"ADMIN"} />}>
