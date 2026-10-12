@@ -2,26 +2,30 @@ import type { ProductResponse } from "../types/ProductResponse.ts";
 import { useEffect, useState } from "react";
 import { fetchAllProducts } from "../service/ProductService.ts";
 import { ProductCard } from "../components/ProductCard.tsx";
-import type { CartItem } from "../types/CartItem.ts";
 import { Cart } from "../components/Cart.tsx";
 import {ProductFilterBar} from "../components/ProductFilterBar.tsx";
-import { getSubject } from "../service/authService.ts";
+import type { CartItem } from "../types/CartItem.ts";
 
-export function ProductsPage() {
+type ProductsPageProps = {
+  cartItems: CartItem[];
+  onAddToCart: (product: ProductResponse) => void;
+  onIncrease: (id: number) => void;
+  onDecrease: (id: number) => void;
+  onCheckout: () => Promise<void>;
+};
+
+export function ProductsPage({
+  cartItems,
+  onAddToCart,
+  onIncrease,
+  onDecrease,
+  onCheckout,
+}: ProductsPageProps) {
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
-  const subject = getSubject();
-  const cartKey = subject ? `cart:${subject}` : null;
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    if(!cartKey) return [];
-
-    const savedCart = sessionStorage.getItem(cartKey);
-
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
 
   const [showCart, setShowCart] = useState(false);
 
@@ -54,48 +58,6 @@ export function ProductsPage() {
       isMounted = false;
     };
   }, []);
-
-  function addToCart(product: ProductResponse) {
-    setCartItems((currentItems) => {
-      const existing = currentItems.find((item) => item.id === product.id);
-
-      if (existing) {
-        return currentItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      }
-
-      return [...currentItems, { ...product, quantity: 1 }];
-    });
-
-    alert(`${product.name} har lagts till i kundvagnen`);
-  }
-
-  useEffect(() => {
-    if(cartKey) {
-      sessionStorage.setItem(cartKey, JSON.stringify(cartItems));
-    }
-  }, [cartItems, cartKey]);
-
-  function increaseQuantity(id: number) {
-    setCartItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
-      ),
-    );
-  }
-
-  function decreaseQuantity(id: number) {
-    setCartItems((currentItems) =>
-      currentItems
-        .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item,
-        )
-        .filter((item) => item.quantity > 0),
-    );
-  }
 
 
   const filteredProducts = products.filter((product) => {
@@ -133,8 +95,9 @@ export function ProductsPage() {
       {showCart && (
         <Cart
           items={cartItems}
-          onIncrease={increaseQuantity}
-          onDecrease={decreaseQuantity}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
+          onCheckout={onCheckout}
         />
       )}
 
@@ -182,7 +145,7 @@ export function ProductsPage() {
       {!isLoading && !error && filteredProducts.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} onAdd={addToCart} />
+                <ProductCard key={product.id} product={product} onAdd={onAddToCart} />
             ))}
           </div>
       )}
