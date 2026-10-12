@@ -3,7 +3,11 @@ import { Link, useParams } from "react-router";
 import type { ProductResponse } from "../types/ProductResponse";
 import { fetchProductsById } from "../service/ProductService";
 
-export function ProductsDetailsPage() {
+type ProductDetailPageProps = {
+  onAddToCart: (product: ProductResponse) => void;
+};
+
+export function ProductsDetailsPage({ onAddToCart }: ProductDetailPageProps) {
   const { id } = useParams();
 
   const [product, setProduct] = useState<ProductResponse | null>(null);
@@ -77,10 +81,18 @@ export function ProductsDetailsPage() {
       <p className={`text-xs font-medium`}>
         {product.stock > 0 ? "I lager" : "Ej i lager"}
       </p>
-      <div className="flex items-center gap-2">
+      <div className="mt-4 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => onAddToCart(product)}
+          disabled={product.stock === 0}
+          className="w-fit px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded cursor-pointer transition-colors"
+        >
+          Lägg i kundvagnen
+        </button>
         <Link
           to="/products"
-          className="px-3 py-1.5 rounded-md border border-indigo-600 text-indigo-600 text-sm font-medium hover:bg-indigo-50 mt-2"
+          className="px-3 py-1.5 rounded-md border border-indigo-600 text-indigo-600 text-sm font-medium hover:bg-indigo-50"
         >
           Tillbaka till produkter
         </Link>
