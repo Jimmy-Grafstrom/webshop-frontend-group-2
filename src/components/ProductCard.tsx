@@ -17,7 +17,7 @@ export function ProductCard({ product, onAdd }: ProductCardProps) {
   const isInStock = product.stock > 0;
 
   return (
-    <article className="bg-white rounded-lg border border-slate-200 p-5 flex flex-col justify-between shadow-sm hover:shadow transition-shadow">
+    <article className="bg-white rounded-lg border border-slate-200 p-5 flex flex-col justify-between shadow-sm hover:-translate-y-1 transition duration-200">
       {/*Image & Name & description side by side*/}
       <div className="flex gap-4">
         {showImage ? (
