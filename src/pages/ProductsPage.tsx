@@ -28,6 +28,7 @@ export function ProductsPage({
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
   const [showCart, setShowCart] = useState(false);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     let isMounted = true;
@@ -90,6 +91,15 @@ export function ProductsPage({
         className="border-2 rounded-lg p-1 px-3 py-1.5 bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 cursor-pointer mb-4"
       >
         {showCart ? "Dölj kundvagn" : "Visa kundvagn"}
+
+        {cartCount > 0 && (
+          <span 
+          aria-label={`${cartCount} varor i kundvagnen`}
+          className="ml-2 bg-red-600 text-white rounded-full px-2 py-0.5 text-xs font-semibold"
+          >
+            {cartCount}
+          </span>
+        )}
       </button>
 
       {showCart && (
