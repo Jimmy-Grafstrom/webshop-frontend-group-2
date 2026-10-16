@@ -15,7 +15,7 @@ import { PaymentSuccessPage } from "./pages/PaymentSuccessPage.tsx";
 import { PaymentCancelPage } from "./pages/PaymentCancelPage.tsx";
 import { getSubject } from "./service/authService.ts";
 import type { CartItem } from "./types/CartItem.ts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { ProductResponse } from "./types/ProductResponse.ts";
 import { createOrder } from "./service/OrderService.ts";
 import { createPayment } from "./service/PaymentService.ts";
@@ -95,6 +95,10 @@ export function App() {
     }
   };
 
+  const clearCart = useCallback(() => {
+    setCartItems((prev) => (prev.length === 0 ? prev : []));
+  }, []);
+
 
   return (
     <>
@@ -114,7 +118,7 @@ export function App() {
             onCheckout={handleCheckout} />} />
             <Route path="/products/:id" element={<ProductsDetailsPage onAddToCart={addToCart} />} />
             <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/payment/success" element={<PaymentSuccessPage />} />
+            <Route path="/payment/success" element={<PaymentSuccessPage onClearCart={clearCart} />} />
             <Route path="/payment/cancel" element={<PaymentCancelPage />} />
           </Route>
 
