@@ -1,14 +1,12 @@
-import type { LoginRequest, LoginResponse, RegisterRequest } from "../types/auth";
+import type { LoginRequest, User, RegisterRequest } from "../types/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
-const TOKEN_KEY = "access_token";
-const SUBJECT_KEY = "subject";
-const ROLES_KEY = "roles";
 
-export async function login(credentials: LoginRequest): Promise<LoginResponse> {
+export async function login(credentials: LoginRequest): Promise<User> {
   const response = await fetch(`${API_BASE}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify(credentials),
   });
 
@@ -19,18 +17,16 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
     throw new Error("Något gick fel");
   }
 
-  const data: LoginResponse = await response.json();
-  sessionStorage.setItem(TOKEN_KEY, data.accessToken);
-  sessionStorage.setItem(SUBJECT_KEY, data.subject);
-  sessionStorage.setItem(ROLES_KEY, JSON.stringify(data.roles));
+  const user: User = await response.json();
 
-  return data;
+  return user;
 }
 
 export async function register(credentials: RegisterRequest): Promise<void> {
   const response = await fetch(`${API_BASE}/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify(credentials),
   });
 
@@ -45,25 +41,12 @@ export async function register(credentials: RegisterRequest): Promise<void> {
   }
 }
 
-export function logout() {
-  sessionStorage.removeItem(TOKEN_KEY);
-  sessionStorage.removeItem(SUBJECT_KEY);
-  sessionStorage.removeItem(ROLES_KEY);
-}
-
-export function getToken(): string | null {
-  return sessionStorage.getItem(TOKEN_KEY);
-}
-
-export function getSubject(): string | null {
-  return sessionStorage.getItem(SUBJECT_KEY);
-}
-
-export function getRoles(): string[] {
-  const roles = sessionStorage.getItem(ROLES_KEY);
-  return roles ? JSON.parse(roles) : [];
-}
-
-export function isAuthenticated(): boolean {
-  return getToken() !== null;
+export async function logout(): Promise<void> {
+  const response = await fetch(`${API_BASE}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Utloggningen misslyckades");
+  }
 }

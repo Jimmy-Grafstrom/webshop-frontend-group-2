@@ -1,15 +1,14 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
-import { getSubject } from "../service/authService";
 
-export function PaymentSuccessPage() {
+type PaymentSuccessPageProps = {
+  onClearCart: () => void;
+};
+
+export function PaymentSuccessPage({ onClearCart }: PaymentSuccessPageProps) {
   useEffect(() => {
-    const subject = getSubject();
-
-    if(subject) {
-    sessionStorage.removeItem(`cart:${subject}`);
-    }
-  }, []);
+    onClearCart();
+  }, [onClearCart]);
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center self-start mt-2">

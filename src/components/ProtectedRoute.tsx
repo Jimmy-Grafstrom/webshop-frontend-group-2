@@ -1,24 +1,18 @@
 import { Navigate, Outlet } from "react-router";
-import {getRoles, isAuthenticated} from "../service/authService";
+import type { User } from "../types/auth";
 
-interface Props {
+type ProtectedRouteProps = {
+    user: User | null;
     requiredRole?: string;
-}
+};
 
-export function ProtectedRoute({ requiredRole }: Props){
-    if(!isAuthenticated()){
+export function ProtectedRoute({ user, requiredRole }: ProtectedRouteProps) {
+    if (!user) {
         return <Navigate to="/login" replace />;
     }
 
-    if (requiredRole) {
-        const roles = getRoles();
-        const hasRole = roles.some(
-            (role) => role === requiredRole || role === `ROLE_${requiredRole}`
-        );
-
-        if (!hasRole) {
-            return <Navigate to="/login" replace />;
-        }
+    if (requiredRole && !user.roles?.includes(requiredRole)) {
+        return <Navigate to="/" replace />;
     }
-    return <Outlet />;
+    return <Outlet />
 }

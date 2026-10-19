@@ -1,22 +1,26 @@
 import { useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router";
-import { getRoles, isAuthenticated, logout } from "../service/authService";
+import { NavLink, useNavigate } from "react-router";
+import type { User } from "../types/auth";
 
 const linkClass =
   "p-1 font-semibold text-blue-950 hover:text-blue-900 hover:underline active:text-blue-700";
 
-const Header = () => {
+type HeaderProps = {
+  user: User | null;
+  onLogout: () => Promise<void>;
+};
+
+const Header = ({ user, onLogout }: HeaderProps) => {
   const navigate = useNavigate();
-  useLocation(); 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const loggedIn = isAuthenticated();
-  const isAdmin = getRoles().includes("ADMIN");
+  const loggedIn = user !== null;
+  const isAdmin = user?.roles.some((role) => role === "ADMIN" || role === "ROLE_ADMIN") ?? false;
 
   const closeMenu = () => setMenuOpen(false);
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await onLogout();
     closeMenu();
     navigate("/");
   }
@@ -46,6 +50,7 @@ const Header = () => {
   const authLinks = loggedIn ? (
     <li>
       <button
+      type="button"
         onClick={handleLogout}
         className={`${linkClass} uppercase tracking-wider cursor-pointer`}
       >
