@@ -13,25 +13,35 @@ import { ProductsDetailsPage } from "./pages/ProductsDetailsPage.tsx";
 import { RegisterPage } from "./pages/RegisterPage.tsx";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage.tsx";
 import { PaymentCancelPage } from "./pages/PaymentCancelPage.tsx";
-import { getSubject } from "./service/authService.ts";
 import type { CartItem } from "./types/CartItem.ts";
 import { useEffect, useState, useCallback } from "react";
 import type { ProductResponse } from "./types/ProductResponse.ts";
 import { createOrder } from "./service/OrderService.ts";
 import { createPayment } from "./service/PaymentService.ts";
 import type { CreateOrderRequest } from "./types/Order.ts";
+import type { User } from "./types/auth";
+import type { LoginRequest } from "./types/auth";
+import { login, logout } from "./service/authService.ts";
 
 export function App() {
-  const subject = getSubject();
-  const cartKey = subject ? `cart:${subject}` : null;
+  const [user, setUser] = useState<User | null>(null);
 
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    if (!cartKey) return [];
+  const cartKey = user ? `cart:${user.subject}` : null;
 
-    const savedCart = sessionStorage.getItem(cartKey);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  async function handleLogin(credentials: LoginRequest) {
+    const loggedInUser = await login(credentials);
+    const savedCart = sessionStorage.getItem(`cart:${loggedInUser.subject}`);
+    setCartItems(savedCart ? JSON.parse(savedCart) : []);
+    setUser(loggedInUser);
+  }
+
+  async function handleLogout() {
+    await logout();
+    setUser(null);
+    setCartItems([]);
+  }
 
   function addToCart(product: ProductResponse) {
     setCartItems((currentItems) => {
@@ -78,9 +88,12 @@ export function App() {
   const handleCheckout = async () => {
     try {
       const orderPayload: CreateOrderRequest = {
-        items: cartItems.map((item) => ({ id: item.id, quantity: item.quantity })),
+        items: cartItems.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+        })),
       };
-      
+
       const createdOrder = await createOrder(orderPayload);
       const payment = await createPayment({ orderId: createdOrder.id });
 
@@ -102,27 +115,41 @@ export function App() {
 
   return (
     <>
-      <Header />
+      <Header user={user} onLogout={handleLogout} />
       <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/products" element={<ProductsPage
-            cartItems={cartItems}
-            onAddToCart={addToCart}
-            onIncrease={increaseQuantity}
-            onDecrease={decreaseQuantity}
-            onCheckout={handleCheckout} />} />
-            <Route path="/products/:id" element={<ProductsDetailsPage onAddToCart={addToCart} />} />
-            <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/payment/success" element={<PaymentSuccessPage onClearCart={clearCart} />} />
+          <Route element={<ProtectedRoute user={user} />}>
+            <Route
+              path="/products"
+              element={
+                <ProductsPage
+                  cartItems={cartItems}
+                  onAddToCart={addToCart}
+                  onIncrease={increaseQuantity}
+                  onDecrease={decreaseQuantity}
+                  onCheckout={handleCheckout}
+                />
+              }
+            />
+            <Route
+              path="/products/:id"
+              element={<ProductsDetailsPage onAddToCart={addToCart} />}
+            />
+            <Route path="/welcome" element={<WelcomePage user={user} />} />
+            <Route
+              path="/payment/success"
+              element={<PaymentSuccessPage onClearCart={clearCart} />}
+            />
             <Route path="/payment/cancel" element={<PaymentCancelPage />} />
           </Route>
 
-          <Route element={<ProtectedRoute requiredRole={"ADMIN"} />}>
+          <Route
+            element={<ProtectedRoute user={user} requiredRole={"ADMIN"} />}
+          >
             <Route path={"/admin"} element={<AdminPage />} />
             <Route path="/admin/add" element={<AdminAddProductPage />} />
           </Route>

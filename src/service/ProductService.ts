@@ -1,5 +1,4 @@
 import type { ProductResponse } from "../types/ProductResponse.ts";
-import { getToken } from "./authService.ts";
 
 const API_BASE_URL =
   import.meta.env.VITE_PRODUCT_API_URL || "/api/products";
@@ -27,8 +26,8 @@ export async function createProduct(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
     },
+    credentials: "include",
     body: JSON.stringify(product),
   });
 
@@ -36,7 +35,9 @@ export async function createProduct(
 }
 
 export async function fetchProductsById(id: number): Promise<ProductResponse | null> {
-  const response = await fetch(`${API_BASE_URL}/${id}`);
+  const response = await fetch(`${API_BASE_URL}/${id}`, {
+    credentials: "include",
+  });
 
   if(response.status === 404) {
     return null;

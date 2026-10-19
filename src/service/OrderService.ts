@@ -1,18 +1,16 @@
-import { getToken } from "./authService";
 import type { CreateOrderRequest, OrderResponse } from "../types/Order";
 
 const API_URL = import.meta.env.VITE_API_ORDER_SERVICE_URL ?? "";
 
 export const createOrder = async (order: CreateOrderRequest,
 ): Promise<OrderResponse> => {
-  const token = getToken();
 
   const response = await fetch(`${API_URL}/order`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
+    credentials: "include",
     body: JSON.stringify(order),
   });
 

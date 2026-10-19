@@ -86,7 +86,7 @@ export const ProductTable = ({ products, actions }: Props) => {
                         }}
                       />
                     ) : (
-                      <div className="w-12 h-12 bg-slate-100 rounded-md flex-shrink-0 flex items-center justify-center text-slate-300 text-xs text-center">
+                      <div className="w-12 h-12 bg-slate-100 rounded-md shrink-0 flex items-center justify-center text-slate-300 text-xs text-center">
                         Ingen bild
                       </div>
                     )}

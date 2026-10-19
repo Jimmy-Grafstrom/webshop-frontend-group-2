@@ -1,7 +1,12 @@
 import { Link } from "react-router";
 import { LoginForm } from "../components/LoginForm";
+import type { LoginRequest } from "../types/auth";
 
-export function LoginPage() {
+type LogInPageProps = {
+  onLogin: (credentials: LoginRequest) => Promise<void>;
+};
+
+export function LoginPage({ onLogin }: LogInPageProps) {
   return (
     <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-lg border border-slate-200 w-full max-w-sm">
       <div className="text-center mb-8">
@@ -13,7 +18,8 @@ export function LoginPage() {
         </p>
       </div>
 
-      <LoginForm />
+      <LoginForm onLogin={onLogin} />
+
       <p className="text-center text-sm text-slate-500 mt-6">
         Har du inget konto?{" "}
         <Link

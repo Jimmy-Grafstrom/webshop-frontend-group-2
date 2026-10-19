@@ -1,4 +1,3 @@
-import { getToken } from "./authService";
 import type { PaymentRequest, PaymentResponse } from "../types/payment";
 
 const PAYMENT_API_BASE_URL = import.meta.env.VITE_PAYMENT_API_URL || "/payment";
@@ -10,8 +9,8 @@ export async function createPayment(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
     },
+    credentials: "include",
     body: JSON.stringify(request),
   });
 

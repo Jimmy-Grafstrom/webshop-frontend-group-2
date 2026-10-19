@@ -1,24 +1,33 @@
 import { useState } from "react";
-import { login } from "../service/authService";
 import { useNavigate } from "react-router";
+import type { FormEvent } from "react";
+import type { LoginRequest } from "../types/auth";
 
-export function LoginForm() {
+type LoginFormProps = {
+  onLogin: (credentials: LoginRequest) => Promise<void>;
+};
+
+export function LoginForm({onLogin}: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+    setError("");
+
     try {
-      await login({ username, password });
+      await onLogin({ username, password });
       navigate("/welcome");
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
       }
     }
+
   }
   return (
     <form onSubmit={handleSubmit}>

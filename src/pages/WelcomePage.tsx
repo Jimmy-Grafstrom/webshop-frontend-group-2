@@ -1,8 +1,12 @@
-import { getSubject, getRoles } from "../service/authService";
+import type { User } from "../types/auth";
 
-export function WelcomePage() {
-  const subject = getSubject();
-  const roles = getRoles();
+type WelcomePageProp = {
+  user: User | null;
+}
+
+export function WelcomePage({user}: WelcomePageProp) {
+  const subject = user?.subject;
+  const roles = user?.roles ?? [];
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center">
