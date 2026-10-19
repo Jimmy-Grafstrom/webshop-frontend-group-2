@@ -30,10 +30,6 @@ export function App() {
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const clearCart = useCallback(() => {
-    setCartItems([]);
-  }, []);
-
   async function handleLogin(credentials: LoginRequest) {
     const loggedInUser = await login(credentials);
     const savedCart = sessionStorage.getItem(`cart:${loggedInUser.subject}`);
