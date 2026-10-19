@@ -14,7 +14,7 @@ import { RegisterPage } from "./pages/RegisterPage.tsx";
 import { PaymentSuccessPage } from "./pages/PaymentSuccessPage.tsx";
 import { PaymentCancelPage } from "./pages/PaymentCancelPage.tsx";
 import type { CartItem } from "./types/CartItem.ts";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { ProductResponse } from "./types/ProductResponse.ts";
 import { createOrder } from "./service/OrderService.ts";
 import { createPayment } from "./service/PaymentService.ts";
@@ -111,6 +111,11 @@ export function App() {
       );
     }
   };
+
+  const clearCart = useCallback(() => {
+    setCartItems((prev) => (prev.length === 0 ? prev : []));
+  }, []);
+
 
   return (
     <>
