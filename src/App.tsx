@@ -22,6 +22,7 @@ import type { CreateOrderRequest } from "./types/Order.ts";
 import type { User } from "./types/auth";
 import type { LoginRequest } from "./types/auth";
 import { login, logout } from "./service/authService.ts";
+import { CookieBanner } from "./components/CookieBanner.tsx";
 
 export function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -157,6 +158,7 @@ export function App() {
         </Routes>
       </main>
       <Footer />
+      <CookieBanner />
     </>
   );
 }
