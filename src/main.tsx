@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router";
 async function enableMocking() {
   if (import.meta.env.VITE_USE_MOCKS !== "true") return;
   const { worker } = await import("./mocks/browser");
-  await worker.start({ onUnhandledRequest: "bypass" });
+  await worker.start({ onUnhandledRequest: "error" });
 }
 
 enableMocking().then(() => {
