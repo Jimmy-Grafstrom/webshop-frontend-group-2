@@ -4,6 +4,9 @@ import { server } from "../mocks/server";
 import "@testing-library/jest-dom/vitest";
 
 
-afterEach (() => server.resetHandlers());
+afterEach (() => {
+    cleanup();
+    server.resetHandlers();
+});
 afterAll(() => server.close());
 beforeAll(() => server.listen({onUnhandledRequest: 'error'}));
