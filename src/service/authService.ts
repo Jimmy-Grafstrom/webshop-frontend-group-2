@@ -1,4 +1,4 @@
-import type { LoginRequest, User, RegisterRequest } from "../types/auth";
+import type { LoginRequest, User, RegisterRequest, MeResponse } from "../types/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
@@ -48,5 +48,27 @@ export async function logout(): Promise<void> {
   });
   if (!response.ok) {
     throw new Error("Utloggningen misslyckades");
+  }
+}
+
+export async function fetchCurrentUser(): Promise<User | null> {
+  try {
+    const response = await fetch(`${API_BASE}/auth/me`, {
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const me: MeResponse = await response.json();
+
+    return {
+      subject: me.subject,
+      roles: me.roles,
+      expiresIn: me.remainingSeconds,
+    };
+  } catch {
+    return null;
   }
 }

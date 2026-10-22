@@ -21,11 +21,13 @@ import { createPayment } from "./service/PaymentService.ts";
 import type { CreateOrderRequest } from "./types/Order.ts";
 import type { User } from "./types/auth";
 import type { LoginRequest } from "./types/auth";
-import { login, logout } from "./service/authService.ts";
+import { login, logout, fetchCurrentUser } from "./service/authService.ts";
 import { CookieBanner } from "./components/CookieBanner.tsx";
 
 export function App() {
   const [user, setUser] = useState<User | null>(null);
+
+  const [authChecked, setAuthChecked] = useState(false);
 
   const cartKey = user ? `cart:${user.subject}` : null;
 
@@ -43,6 +45,32 @@ export function App() {
     setUser(null);
     setCartItems([]);
   }
+
+  useEffect(() => {
+    fetchCurrentUser()
+      .then((currentUser) => {
+        if (currentUser) {
+          const savedCart = sessionStorage.getItem(
+            `cart:${currentUser.subject}`,
+          );
+          setCartItems(savedCart ? JSON.parse(savedCart) : []);
+        }
+        setUser(currentUser);
+      })
+      .finally(() => setAuthChecked(true));
+  }, []);
+
+  useEffect(() => {
+    if (!user?.expiresIn) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      setUser(null);
+      setCartItems([]);
+    }, user.expiresIn * 1000); //auto-logout, kan ändra inför demot för att visa att det faktiskt fungerar
+
+    return () => clearTimeout(timer);
+  }, [user]);
 
   function addToCart(product: ProductResponse) {
     setCartItems((currentItems) => {
@@ -113,6 +141,13 @@ export function App() {
     setCartItems((prev) => (prev.length === 0 ? prev : []));
   }, []);
 
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+        <p className="text-slate-500">Laddar...</p>
+      </div>
+    );
+  }
 
   return (
     <>
