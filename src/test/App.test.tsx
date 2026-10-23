@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import App from "../App";
-import { expect, test } from "vitest";
+import { describe, expect, it, test } from "vitest";
 import { mockProducts } from "../mocks/handlers";
 import { MemoryRouter } from "react-router";
 import { server } from "../mocks/server";
