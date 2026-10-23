@@ -79,7 +79,7 @@ export const AdminPage = () => {
                         actions={
                             <Link
                                 to={"/admin/add"}
-                                className={"px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"}
+                                className={"inline-flex items-center justify-center shrink-0 whitespace-nowrap w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors"}
                             >
                                 Lägg till ny produkt
                             </Link>

@@ -35,7 +35,7 @@ export const ProductTable = ({ products, actions }: Props) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         <input
           type="text"
           placeholder="Sök på produktnamn eller ID..."
@@ -46,7 +46,7 @@ export const ProductTable = ({ products, actions }: Props) => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-3 py-2 text-sm border rounded-lg bg-white"
+          className="w-full sm:w-auto px-3 py-2 text-sm border rounded-lg bg-white"
         >
           <option value="ALL">Alla kategorier</option>
           {CATEGORIES.map((cat) => (
@@ -55,7 +55,7 @@ export const ProductTable = ({ products, actions }: Props) => {
             </option>
           ))}
         </select>
-        {actions && <div>{actions}</div>}
+       {actions && <div className="sm:ml-auto">{actions}</div>}
       </div>
 
       <div className="bg-white rounded-lg border border-slate-200 shadow-sm overflow-x-auto">
