@@ -6,8 +6,6 @@ import { MemoryRouter } from "react-router";
 import { server } from "../mocks/server";
 import { http, HttpResponse } from "msw";
 
-
-
 function renderAppAt(path: string) {
     return render (
         <MemoryRouter initialEntries={[ path ]}>
@@ -36,11 +34,7 @@ test ("visar felmeddelande när produkterna inte kan hämtas", async () => {
     expect(await screen.findByText("Ett fel uppstod vid hämtning av produkter:")).toBeInTheDocument();
     expect(screen.queryByText(mockProducts[0].name)).not.toBeInTheDocument();
     expect(screen.queryByText("Inga produkter hittades.")).not.toBeInTheDocument();
-import { MemoryRouter } from "react-router";
-import { http, HttpResponse } from "msw";
-import { describe, expect, it } from "vitest";
-import { server } from "../mocks/server";
-import { App } from "../App";
+
 
 function renderApp(path = "/") {
   render(
@@ -114,3 +108,4 @@ describe("Återställning av inloggad användare", () => {
     ).toBeInTheDocument();
   });
 });
+})
