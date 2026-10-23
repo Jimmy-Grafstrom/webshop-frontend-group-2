@@ -7,6 +7,7 @@ import "@testing-library/jest-dom/vitest";
 afterEach (() => {
     cleanup();
     server.resetHandlers();
+    sessionStorage.clear();
 });
 afterAll(() => server.close());
 beforeAll(() => server.listen({onUnhandledRequest: 'error'}));

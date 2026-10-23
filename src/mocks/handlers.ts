@@ -31,11 +31,11 @@ export const handlers = [
       : new HttpResponse(null, { status: 404 });
   }),
 
-  http.get("*/auth/me", ({ request }) => {
-    const auth = request.headers.get("Authorization");
-    if (!auth?.startsWith("Bearer ")) {
-      return new HttpResponse(null, { status: 401 });
-    }
-    return HttpResponse.json({ subject: "admin@example.com", roles: ["ADMIN"] });
+  http.get("*/auth/me", () => {
+    return HttpResponse.json({ 
+      subject: "admin@example.com", 
+      roles: ["ADMIN"],
+      remainingSeconds: 3600,
+     });
   }),
 ];
