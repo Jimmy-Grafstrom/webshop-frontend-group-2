@@ -23,6 +23,7 @@ import type { User } from "./types/auth";
 import type { LoginRequest } from "./types/auth";
 import { login, logout, fetchCurrentUser } from "./service/authService.ts";
 import { CookieBanner } from "./components/CookieBanner.tsx";
+import CookiePage from "./pages/CookiePage.tsx";
 
 export function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -189,6 +190,7 @@ export function App() {
             <Route path={"/admin"} element={<AdminPage />} />
             <Route path="/admin/add" element={<AdminAddProductPage />} />
           </Route>
+          <Route path="/cookies" element={<CookiePage />}/>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
